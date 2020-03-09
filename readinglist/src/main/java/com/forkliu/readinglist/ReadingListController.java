@@ -14,21 +14,25 @@ import java.util.List;
 @RequestMapping("/")
 public class ReadingListController {
     private ReadingListRepository readingListRepository;
+    private AmazonProperties amazonProperties;
 
     @Autowired
     public ReadingListController(
-            ReadingListRepository readingListRepository) {
+            ReadingListRepository readingListRepository,
+            AmazonProperties amazonProperties) {
         this.readingListRepository = readingListRepository;
+        this.amazonProperties = amazonProperties;
     }
 
     @RequestMapping(value="/{reader}", method= RequestMethod.GET)
     public String readersBooks(
-            @PathVariable("reader") String reader,
-            Model model) {
+            Reader reader, Model model) {
         List<Book> readingList =
                 readingListRepository.findByReader(reader);
         if (readingList != null) {
             model.addAttribute("books", readingList);
+            model.addAttribute("reader", reader);
+            model.addAttribute("amazonID", amazonProperties.getAssociateId());
         }
         return "readingList";
     }
