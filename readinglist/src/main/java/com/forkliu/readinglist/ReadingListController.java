@@ -1,5 +1,6 @@
 package com.forkliu.readinglist;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +36,7 @@ public class ReadingListController {
     public String addToReadingList(
             @PathVariable("reader") String reader, Book book) {
         book.setReader(reader);
+        // log.warn("xxx");
         readingListRepository.save(book);
         return "redirect:/{reader}";
     }
